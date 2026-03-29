@@ -35,6 +35,14 @@ done\done_task.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h
 done\done_task.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h
 done\done_task.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h
 done\done_task.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
+done\done_task.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h
+done\done_task.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
+done\done_task.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 done\done_task.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 done\done_task.o: ../Common/Inc/Common_types.h
 done\done_task.o: ../Internet/Inc/Int_Led.h
+done\done_task.o: ../Internet/Inc/Int_Motor.h
+done\done_task.o: ../Core/Inc/tim.h
+done\done_task.o: ../Internet/Inc/Int_SI4R1.h
+done\done_task.o: ../Core/Inc/spi.h
+done\done_task.o: ..\App\Inc\App_Data.h

@@ -14,6 +14,20 @@ void power_task(void *pvParameters);
 TaskHandle_t led_task_handle;
 void led_task(void *pvParameters);
 
+// 设置电机任务
+#define MOTOR_TASK_NAME "motor_task"
+#define MOTOR_TASK_StackDepth 128
+#define MOTOR_TASK_uxPriority 4
+TaskHandle_t motor_task_handle;
+void motor_task(void *pvParameters);
+
+// 设置数据接收任务
+#define RX_TASK_NAME "rx_task"
+#define RX_TASK_StackDepth 128
+#define RX_TASK_uxPriority 3
+TaskHandle_t rx_task_handle;
+void rx_task(void *pvParameters);
+
 /*全局变量状态区 START*/
 // 遥控状态全局变量
 RC_STATUS_E rc_status = eRC_CONNECTED;
@@ -22,10 +36,24 @@ PLANE_STATUS_E plane_status = eDONE_NORMAL;
 
 void done_task_Init(void)
 {
+    HAL_Delay(200);
+    printf("nice done\r\n");
+    // 初始化电机任务
+    Int_Motor_Init();
+
+    // 初始化无线电
+    Int_SI4R1_Init();
+    SI24R1_RX_Mode();
+
     // 创建电源管理任务
     xTaskCreate(power_task, POWER_TASK_NAME, POWER_TASK_StackDepth, NULL, POWER_TASK_uxPriority, &power_task_handle);
     // 创建灯控任务
     xTaskCreate(led_task, LED_TASK_NAME, LED_TASK_StackDepth, NULL, LED_TASK_uxPriority, &led_task_handle);
+    // 创建电机任务
+    xTaskCreate(motor_task, MOTOR_TASK_NAME, MOTOR_TASK_StackDepth, NULL, MOTOR_TASK_uxPriority, &motor_task_handle);
+
+    // 创建数据接收任务
+    xTaskCreate(rx_task, RX_TASK_NAME, RX_TASK_StackDepth, NULL, RX_TASK_uxPriority, &rx_task_handle);
 
     // 启动freertos
     vTaskStartScheduler();
@@ -37,7 +65,8 @@ void power_task(void *pvParameters)
     while (1)
     {
         // 每十秒都开机一次 防止低功耗休眠
-        vTaskDelay(10000);
+        // vTaskDelay(10000);
+        vTaskDelay(1000);
         HAL_GPIO_WritePin(NRST_BAT_GPIO_Port, NRST_BAT_Pin, GPIO_PIN_RESET);
         // 延时100ms
         vTaskDelay(100);
@@ -107,5 +136,34 @@ void led_task(void *pvParameters)
         }
 
         vTaskDelay(50 / portTICK_PERIOD_MS);
+    }
+}
+
+void motor_task(void *pvParameters)
+{
+    // 设置电机速度 50
+    motor_left0_top_handle.speed = 0;
+    motor_right0_top_handle.speed = 0;
+    motor_left1_bottom_handle.speed = 0;
+    motor_right1_bottom_handle.speed = 0;
+
+    Int_Motor_SetSpeed(&motor_left0_top_handle);
+    Int_Motor_SetSpeed(&motor_right0_top_handle);
+    Int_Motor_SetSpeed(&motor_left1_bottom_handle);
+    Int_Motor_SetSpeed(&motor_right1_bottom_handle);
+
+    while (1)
+    {
+        vTaskDelay(50 / portTICK_PERIOD_MS);
+    }
+}
+
+void rx_task(void *pvParameters)
+{
+    while (1)
+    {
+        App_Data_Receive(&joystick_key_handle);
+        printf("radio_task\n");
+        vTaskDelay(500 / portTICK_PERIOD_MS);
     }
 }

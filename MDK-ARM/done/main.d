@@ -25,7 +25,12 @@ done\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h
 done\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h
 done\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h
 done\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
+done\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h
+done\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
+done\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 done\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
+done\main.o: ../Core/Inc/spi.h
+done\main.o: ../Core/Inc/tim.h
 done\main.o: ../Core/Inc/usart.h
 done\main.o: ../Core/Inc/gpio.h
 done\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
@@ -41,3 +46,6 @@ done\main.o: ../Mid/FreeRTOS/include/task.h
 done\main.o: ../Mid/FreeRTOS/include/list.h
 done\main.o: ../Common/Inc/Common_types.h
 done\main.o: ../Internet/Inc/Int_Led.h
+done\main.o: ../Internet/Inc/Int_Motor.h
+done\main.o: ../Internet/Inc/Int_SI4R1.h
+done\main.o: ..\App\Inc\App_Data.h
