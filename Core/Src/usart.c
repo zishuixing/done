@@ -115,6 +115,8 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 /* USER CODE BEGIN 1 */
 int fputc(int ch, FILE *file)
 {
+  // 把 printf 的单字符输出重定向到 USART2。
+  // 有了这个函数后，整个工程里就可以直接用 printf 打串口日志。
   HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, 1000);
   return ch;
 }

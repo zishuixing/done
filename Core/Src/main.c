@@ -97,7 +97,11 @@ int main(void)
   MX_TIM4_Init();
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
+  // 启动日志：用于确认串口已经可用、程序已经跑到应用层初始化阶段
   printf("LOVE AND LIFE!\n");
+
+  // 进入你自己写的系统任务初始化入口。
+  // 从这里开始，会完成电机/无线初始化并创建 FreeRTOS 任务。
   done_task_Init();
   /* USER CODE END 2 */
 
