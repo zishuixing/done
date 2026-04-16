@@ -39,7 +39,7 @@ PLANE_STATUS_E plane_status = eDONE_NORMAL;
 void done_task_Init(void)
 {
     // 系统启动后先等一小段时间，让外设和无线模块稳定下来
-    HAL_Delay(200);
+    HAL_Delay(400);
     printf("nice done\r\n");
 
     // 初始化 4 路电机 PWM 输出通道
@@ -74,12 +74,33 @@ void power_task(void *pvParameters)
     while (1)
     {
         // 这里通过周期性输出低脉冲给 NRST_BAT 引脚，起到“电源保持/防休眠”的作用
-        vTaskDelay(1000);
-        HAL_GPIO_WritePin(NRST_BAT_GPIO_Port, NRST_BAT_Pin, GPIO_PIN_RESET);
+        uint32_t notify_count = ulTaskNotifyTake(pdTRUE, 10000);
+        if (notify_count == 0)
+        {
 
-        // 保持 100ms 的低电平脉冲，确保外部电路能识别到
-        vTaskDelay(100);
-        HAL_GPIO_WritePin(NRST_BAT_GPIO_Port, NRST_BAT_Pin, GPIO_PIN_SET);
+            HAL_GPIO_WritePin(NRST_BAT_GPIO_Port, NRST_BAT_Pin, GPIO_PIN_RESET);
+
+            // 保持 100ms 的低电平脉冲，确保外部电路能识别到
+            vTaskDelay(100);
+            HAL_GPIO_WritePin(NRST_BAT_GPIO_Port, NRST_BAT_Pin, GPIO_PIN_SET);
+        }
+        else if (notify_count > 0)
+        {
+            // 关机指令
+            HAL_GPIO_WritePin(NRST_BAT_GPIO_Port, NRST_BAT_Pin, GPIO_PIN_RESET);
+
+            // 保持 100ms 的低电平脉冲，确保外部电路能识别到
+            HAL_Delay(100);
+            HAL_GPIO_WritePin(NRST_BAT_GPIO_Port, NRST_BAT_Pin, GPIO_PIN_SET);
+
+            HAL_Delay(500);
+
+            HAL_GPIO_WritePin(NRST_BAT_GPIO_Port, NRST_BAT_Pin, GPIO_PIN_RESET);
+
+            // 保持 100ms 的低电平脉冲，确保外部电路能识别到
+            HAL_Delay(100);
+            HAL_GPIO_WritePin(NRST_BAT_GPIO_Port, NRST_BAT_Pin, GPIO_PIN_SET);
+        }
     }
 }
 
@@ -198,6 +219,13 @@ void rx_task(void *pvParameters)
         // 调试打印：确认接收任务正在运行
         // printf("radio_task\n");
 
+        // 当接收到关机指令时，更新飞机状态为故障状态
+        if (joystick_key_handle.shutdown == 1)
+        {
+            xTaskNotifyGive(power_task_handle);
+        }
+        // 解锁遥控器
+        App_Data_ProcessDoneState(&joystick_key_handle, &plane_status, &rc_status);
         // 当前接收节拍是 10ms，一直轮询无线接收缓冲区
         xTaskDelayUntil(&last_wake_time, 10 / portTICK_PERIOD_MS);
     }

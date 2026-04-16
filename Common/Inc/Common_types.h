@@ -59,4 +59,13 @@ typedef enum
     eDONE_FAULT,
 } PLANE_STATUS_E;
 
+typedef enum
+{
+    eFREE,
+    eMAX,
+    eLEAVEMAX,
+    eMIN,
+    eUNLOCK
+} THR_Status_e;
+
 #endif /* __COMMON_TYPES_H__ */

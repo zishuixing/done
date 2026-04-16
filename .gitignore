@@ -1,0 +1,55 @@
+# =========================
+# OS / Editor
+# =========================
+.DS_Store
+Thumbs.db
+
+.vscode/
+
+# =========================
+# Python temp / local tools
+# =========================
+.tmp/
+.vendor/
+__pycache__/
+*.pyc
+
+# =========================
+# Keil user files
+# =========================
+*.uvoptx
+*.uvguix.*
+*.bak
+*.dep
+
+# =========================
+# Keil build outputs
+# =========================
+MDK-ARM/done/
+MDK-ARM/*.plg
+MDK-ARM/*.htm
+MDK-ARM/*.map
+MDK-ARM/*.lnp
+MDK-ARM/*.sct
+MDK-ARM/*.dep
+MDK-ARM/*.crf
+MDK-ARM/*.o
+MDK-ARM/*.d
+MDK-ARM/*.axf
+MDK-ARM/*.hex
+MDK-ARM/*.bin
+MDK-ARM/*.lib
+MDK-ARM/*.lst
+
+# Keil generated helper folders
+MDK-ARM/.vscode/
+
+# =========================
+# Extracted / generated external files
+# =========================
+extern/pdf_extract/
+
+# =========================
+# Optional logs
+# =========================
+*.log
